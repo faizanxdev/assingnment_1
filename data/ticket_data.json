@@ -1,0 +1,28 @@
+{
+  "open_tickets": 2,
+  "total_tickets": 15,
+  "resolved_tickets": 13,
+  "average_resolution_time": "24 hours",
+  "tickets": [
+    {
+      "ticket_id": "TKT001",
+      "subject": "Payout delay issue",
+      "description": "My payout has been delayed for 3 days",
+      "status": "open",
+      "priority": "high",
+      "created_date": "2024-01-14T09:00:00Z",
+      "last_updated": "2024-01-15T14:30:00Z",
+      "merchant_id": "MERCH123456"
+    },
+    {
+      "ticket_id": "TKT002",
+      "subject": "KYC document upload",
+      "description": "Need help uploading PAN card for verification",
+      "status": "open",
+      "priority": "medium",
+      "created_date": "2024-01-13T11:00:00Z",
+      "last_updated": "2024-01-14T16:00:00Z",
+      "merchant_id": "MERCH123456"
+    }
+  ]
+} 

@@ -1,0 +1,39 @@
+{
+  "merchant_id": "MERCH123456",
+  "email_notifications": {
+    "kyc_updates": true,
+    "payout_alerts": true,
+    "account_changes": true,
+    "ticket_updates": true,
+    "daily_summary": false,
+    "marketing_emails": false
+  },
+  "whatsapp_notifications": {
+    "kyc_updates": false,
+    "payout_alerts": true,
+    "account_changes": true,
+    "ticket_updates": false,
+    "transaction_alerts": true
+  },
+  "sms_notifications": {
+    "kyc_updates": false,
+    "payout_alerts": true,
+    "account_changes": false,
+    "ticket_updates": false,
+    "otp_verification": true
+  },
+  "notification_history": [
+    {
+      "date": "2024-01-15T14:30:00Z",
+      "type": "payout_alert",
+      "message": "Payout of ₹25,000 has been initiated",
+      "channel": "email"
+    },
+    {
+      "date": "2024-01-15T10:00:00Z",
+      "type": "account_change",
+      "message": "Your transaction limit has been updated",
+      "channel": "whatsapp"
+    }
+  ]
+} 

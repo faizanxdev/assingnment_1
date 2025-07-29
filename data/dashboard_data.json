@@ -1,0 +1,32 @@
+{
+  "merchant_id": "MERCH123456",
+  "weekly_trends": {
+    "transactions": [120, 135, 110, 145, 130, 140, 125],
+    "payouts": [25000, 30000, 28000, 32000, 29000, 35000, 31000],
+    "tickets": [2, 1, 3, 0, 2, 1, 2],
+    "dates": ["2024-01-09", "2024-01-10", "2024-01-11", "2024-01-12", "2024-01-13", "2024-01-14", "2024-01-15"]
+  },
+  "issue_frequency": {
+    "payout_delays": 35,
+    "kyc_issues": 25,
+    "technical_problems": 20,
+    "limit_increases": 15,
+    "account_holds": 5
+  },
+  "performance_metrics": {
+    "uptime": 99.8,
+    "response_time": "2.3s",
+    "success_rate": 98.5,
+    "customer_satisfaction": 4.2,
+    "average_resolution_time": "24 hours"
+  },
+  "monthly_summary": {
+    "total_transactions": 1250,
+    "total_amount": 3500000,
+    "successful_transactions": 1230,
+    "failed_transactions": 20,
+    "total_payouts": 45,
+    "total_tickets": 15,
+    "resolved_tickets": 13
+  }
+} 

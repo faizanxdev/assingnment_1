@@ -1,0 +1,28 @@
+{
+  "merchant_id": "MERCH123456",
+  "kyc_status": "pending",
+  "kyc_level": "basic",
+  "verification_progress": 60,
+  "pending_documents": [
+    "PAN Card",
+    "Address Proof", 
+    "Business Proof"
+  ],
+  "uploaded_documents": [
+    "Aadhaar Card"
+  ],
+  "rejected_documents": [],
+  "kyc_history": [
+    {
+      "date": "2024-01-10",
+      "action": "Document uploaded",
+      "status": "pending",
+      "document_type": "Aadhaar Card"
+    },
+    {
+      "date": "2024-01-08",
+      "action": "KYC initiated",
+      "status": "completed"
+    }
+  ]
+} 

@@ -1,0 +1,35 @@
+{
+  "merchant_id": "MERCH123456",
+  "transaction_limit": 50000,
+  "daily_limit": 100000,
+  "monthly_limit": 2000000,
+  "current_usage": 35000,
+  "limit_utilization": 70,
+  "transaction_count": 125,
+  "average_transaction": 2800,
+  "limit_history": [
+    {
+      "date": "2024-01-01",
+      "old_limit": 25000,
+      "new_limit": 50000,
+      "reason": "Business growth",
+      "approved_by": "system"
+    }
+  ],
+  "recent_transactions": [
+    {
+      "transaction_id": "TXN001",
+      "amount": 5000,
+      "status": "success",
+      "date": "2024-01-15T10:30:00Z",
+      "payment_method": "card"
+    },
+    {
+      "transaction_id": "TXN002",
+      "amount": 3000,
+      "status": "success",
+      "date": "2024-01-15T09:15:00Z",
+      "payment_method": "upi"
+    }
+  ]
+} 

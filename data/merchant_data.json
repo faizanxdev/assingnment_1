@@ -1,0 +1,15 @@
+{
+  "merchant_id": "MERCH123456",
+  "business_name": "Tech Solutions Pvt Ltd",
+  "account_status": "active",
+  "account_type": "business",
+  "registration_date": "2023-06-15",
+  "last_activity": "2024-01-15T10:30:00Z",
+  "compliance_status": "pending",
+  "risk_score": "low",
+  "contact_info": {
+    "email": "merchant@techsolutions.com",
+    "phone": "+91-9876543210",
+    "address": "Mumbai, Maharashtra"
+  }
+} 
