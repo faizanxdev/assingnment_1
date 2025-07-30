@@ -10,15 +10,15 @@ load_dotenv()
 class Config:
     """Configuration class for the application"""
     
-    # OpenAI API settings
-    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    # Google Gemini API settings
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
     
     # Flask settings
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
     
     # AI model settings
-    MODEL_NAME = "gpt-3.5-turbo"  # Using GPT-3.5 for cost efficiency
+    MODEL_NAME = "gemini-1.5-flash"  # Using Gemini for cost efficiency
     MAX_TOKENS = 1000  # Limit response length
     
     # Support context

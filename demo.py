@@ -14,8 +14,8 @@ def run_demo():
     support_ai = CashfreeSupportAI()
     
     # Check API key
-    if not Config.OPENAI_API_KEY or Config.OPENAI_API_KEY == 'your_openai_api_key_here':
-        print("❌ Error: Please set your OpenAI API key in .env file")
+    if not Config.GEMINI_API_KEY or Config.GEMINI_API_KEY == 'your_gemini_api_key_here':
+        print("❌ Error: Please set your Google Gemini API key in .env file")
         print("   Copy env_example.txt to .env and add your API key")
         return
     
@@ -57,7 +57,7 @@ def run_demo():
         
     except Exception as e:
         print(f"❌ Error: {str(e)}")
-        print("   Make sure your OpenAI API key is valid and you have credits")
+        print("   Make sure your Google Gemini API key is valid and you have credits")
 
 def interactive_mode():
     """Run interactive mode for testing"""

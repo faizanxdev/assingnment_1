@@ -750,15 +750,8 @@ def add_kyc_document():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-if __name__ == '__main__':
-    # Check if OpenAI API key is configured
-    if not Config.OPENAI_API_KEY or Config.OPENAI_API_KEY == 'your_openai_api_key_here':
-        print("⚠️  Warning: Please set your OpenAI API key in .env file")
-        print("   Copy env_example.txt to .env and add your API key")
-    
-    # Run Flask app
-    app.run(
-        host='0.0.0.0',
-        port=5000,
-        debug=Config.FLASK_DEBUG
-    ) 
+# WSGI application for Vercel deployment
+app.wsgi_app = app
+
+# Remove the if __name__ == '__main__' block for Vercel compatibility
+# The app will be served by Vercel's serverless functions 

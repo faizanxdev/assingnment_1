@@ -1,9 +1,9 @@
 """
 AI Customer Support Assistant for Cashfree Merchant Issues
-Uses LangChain + OpenAI to provide intelligent responses for all merchant scenarios
+Uses LangChain + Google Gemini to provide intelligent responses for all merchant scenarios
 """
 from typing import Dict, List, Optional, Any
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import HumanMessage, SystemMessage
 from config import Config
@@ -16,14 +16,20 @@ class CashfreeSupportAI:
     """AI-powered customer support assistant for Cashfree merchants"""
     
     def __init__(self):
-        """Initialize the AI support assistant with OpenAI model"""
-        # Initialize OpenAI chat model
-        self.llm = ChatOpenAI(
-            model_name=Config.MODEL_NAME,
-            openai_api_key=Config.OPENAI_API_KEY,
-            max_tokens=Config.MAX_TOKENS,
-            temperature=0.7  # Balanced creativity and accuracy
-        )
+        """Initialize the AI support assistant with Google Gemini model"""
+        # Check if we have a valid API key
+        self.demo_mode = not Config.GEMINI_API_KEY or Config.GEMINI_API_KEY == 'your_gemini_api_key_here' or 'demo' in Config.GEMINI_API_KEY.lower()
+        
+        if not self.demo_mode:
+            # Initialize Google Gemini chat model
+            self.llm = ChatGoogleGenerativeAI(
+                model=Config.MODEL_NAME,
+                google_api_key=Config.GEMINI_API_KEY,
+                max_output_tokens=Config.MAX_TOKENS,
+                temperature=0.7  # Balanced creativity and accuracy
+            )
+        else:
+            self.llm = None
         
         # Initialize data manager
         self.data_manager = MerchantDataManager()
@@ -184,26 +190,46 @@ class CashfreeSupportAI:
         """
         
         # Generate AI response
-        ai_response = self.llm.invoke([
-            SystemMessage(content=self.system_prompt),
-            HumanMessage(content=response_prompt)
-        ])
-        
-        # Store in conversation history
-        conversation_entry = {
-            "query": merchant_query,
-            "response": ai_response.content,
-            "timestamp": datetime.now().isoformat()
-        }
-        self.conversation_history.append(conversation_entry)
-        
-        return {
-            "response": ai_response.content,
-            "suggestions": self._generate_suggestions(merchant_query),
-            "escalation_needed": self._check_escalation_needed(merchant_query),
-            "conversation_id": len(self.conversation_history),
-            "merchant_data": relevant_data
-        }
+        if self.demo_mode or not self.llm:
+            # Demo mode response
+            demo_response = self._generate_demo_response(merchant_query, relevant_data)
+            conversation_entry = {
+                "query": merchant_query,
+                "response": demo_response,
+                "timestamp": datetime.now().isoformat()
+            }
+            self.conversation_history.append(conversation_entry)
+            
+            return {
+                "response": demo_response,
+                "suggestions": self._generate_suggestions(merchant_query),
+                "escalation_needed": self._check_escalation_needed(merchant_query),
+                "conversation_id": len(self.conversation_history),
+                "merchant_data": relevant_data,
+                "demo_mode": True
+            }
+        else:
+            # Real AI response
+            ai_response = self.llm.invoke([
+                SystemMessage(content=self.system_prompt),
+                HumanMessage(content=response_prompt)
+            ])
+            
+            # Store in conversation history
+            conversation_entry = {
+                "query": merchant_query,
+                "response": ai_response.content,
+                "timestamp": datetime.now().isoformat()
+            }
+            self.conversation_history.append(conversation_entry)
+            
+            return {
+                "response": ai_response.content,
+                "suggestions": self._generate_suggestions(merchant_query),
+                "escalation_needed": self._check_escalation_needed(merchant_query),
+                "conversation_id": len(self.conversation_history),
+                "merchant_data": relevant_data
+            }
     
     def _generate_suggestions(self, query: str) -> List[str]:
         """Generate relevant suggestions based on query"""
@@ -321,6 +347,103 @@ class CashfreeSupportAI:
         
         return suggestions
     
+    def _generate_demo_response(self, query: str, merchant_data: Dict[str, Any]) -> str:
+        """Generate demo response when API key is not available"""
+        query_lower = query.lower()
+        
+        # Account hold issues
+        if any(word in query_lower for word in ["hold", "freeze", "account", "unlock"]):
+            return f"""🤖 **Demo Mode Response** - Account Hold Issue
+
+I understand you're experiencing account hold issues. Based on your merchant data, here's what I can help you with:
+
+**Current Account Status:**
+- Merchant ID: {merchant_data.get('merchant_id', 'MERCH123456')}
+- Account Status: {merchant_data.get('account_status', 'active')}
+- Compliance Status: {merchant_data.get('compliance_status', 'pending')}
+
+**Immediate Action Steps:**
+1. ✅ Check your account verification status in the merchant portal
+2. 📋 Review and complete any pending KYC documents
+3. 📞 Contact support with your merchant ID: {merchant_data.get('merchant_id', 'MERCH123456')}
+4. 📊 Review recent transaction patterns for any anomalies
+5. 🔍 Check compliance status and pending requirements
+
+**Expected Timeline:** 24-48 hours for standard review process
+
+**Note:** This is a demo response. For real AI assistance, please add a valid Google Gemini API key to your .env file."""
+
+        # KYC issues
+        elif any(word in query_lower for word in ["kyc", "verification", "document"]):
+            return f"""🤖 **Demo Mode Response** - KYC Verification
+
+I can help you with your KYC verification process. Here's your current status:
+
+**KYC Progress:**
+- Verification Progress: {merchant_data.get('verification_progress', 60)}%
+- Pending Documents: {len(merchant_data.get('pending_documents', []))} items
+- Uploaded Documents: {len(merchant_data.get('uploaded_documents', []))} items
+
+**Required Actions:**
+1. 📤 Upload remaining documents: {', '.join(merchant_data.get('pending_documents', ['PAN Card', 'Address Proof']))}
+2. ✅ Verify document quality and clarity
+3. 📋 Complete business verification form
+4. 📞 Schedule verification call if needed
+5. 🔍 Check KYC status in merchant portal
+
+**Timeline:** 3-5 business days for document review
+
+**Note:** This is a demo response. For real AI assistance, please add a valid Google Gemini API key to your .env file."""
+
+        # Payout issues
+        elif any(word in query_lower for word in ["payout", "settlement", "payment"]):
+            return f"""🤖 **Demo Mode Response** - Payout Issue
+
+I understand you're having payout concerns. Here's your current payout status:
+
+**Payout Information:**
+- Payout Schedule: {merchant_data.get('payout_schedule', 'T+2')}
+- Last Payout: {merchant_data.get('last_payout', '2024-01-15')}
+- Next Settlement: {merchant_data.get('next_settlement', '2024-01-17')}
+- Pending Amount: ₹{merchant_data.get('pending_payouts', 0):,}
+
+**Troubleshooting Steps:**
+1. 💳 Verify bank account details are correct
+2. 📊 Check transaction volume and limits
+3. ⏰ Review payout schedule and timing
+4. 📞 Contact settlement team with merchant ID
+5. 🔍 Check for any compliance holds
+
+**Expected Resolution:** 1-2 business days
+
+**Note:** This is a demo response. For real AI assistance, please add a valid Google Gemini API key to your .env file."""
+
+        # Default response
+        else:
+            return f"""🤖 **Demo Mode Response**
+
+Thank you for your query: "{query}"
+
+I can help you with various merchant support issues including:
+- Account status and holds
+- KYC verification and compliance
+- Payout and settlement issues
+- Transaction limits and processing
+- Support ticket management
+
+**Current Merchant Data:**
+- Merchant ID: {merchant_data.get('merchant_id', 'MERCH123456')}
+- Account Status: {merchant_data.get('account_status', 'active')}
+- Open Tickets: {merchant_data.get('open_tickets', 0)}
+
+**Next Steps:**
+1. Explore the data management features below
+2. Check your merchant dashboard
+3. Review account status and KYC progress
+4. Create support tickets if needed
+
+**Note:** This is a demo response. For real AI assistance, please add a valid Google Gemini API key to your .env file."""
+
     def _check_escalation_needed(self, query: str) -> bool:
         """Determine if issue needs escalation"""
         # Comprehensive escalation keywords

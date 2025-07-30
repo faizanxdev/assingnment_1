@@ -1,6 +1,6 @@
 # 🤖 Cashfree AI Customer Support Assistant
 
-A simple AI-powered customer support assistant for Cashfree merchants using LangChain and OpenAI. This bot helps merchants resolve account issues, payment problems, and technical queries with intelligent responses.
+A simple AI-powered customer support assistant for Cashfree merchants using LangChain and Google Gemini. This bot helps merchants resolve account issues, payment problems, and technical queries with intelligent responses.
 
 ## 🎯 Problem Solved
 
@@ -25,15 +25,15 @@ pip install -r requirements.txt
 
 # Set up environment variables
 cp env_example.txt .env
-# Edit .env and add your OpenAI API key
+# Edit .env and add your Google Gemini API key
 ```
 
-### 2. Configure OpenAI API
+### 2. Configure Google Gemini API
 
-1. Get your OpenAI API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+1. Get your Google Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Edit `.env` file and add your API key:
    ```
-   OPENAI_API_KEY=sk-your-actual-api-key-here
+   GEMINI_API_KEY=your-actual-gemini-api-key-here
    ```
 
 ### 3. Run the Application
@@ -51,6 +51,88 @@ python demo.py
 
 # Or run interactive mode
 python demo.py interactive
+```
+
+## 🌐 Deploy to Vercel (Free)
+
+### Prerequisites
+1. **GitHub Account**: Create a free GitHub account
+2. **Vercel Account**: Sign up at [vercel.com](https://vercel.com) (free)
+3. **Google Gemini API Key**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+
+### Deployment Steps
+
+#### Step 1: Push to GitHub
+```bash
+# Initialize git repository
+git init
+git add .
+git commit -m "Initial commit"
+
+# Create a new repository on GitHub and push
+git remote add origin https://github.com/yourusername/cashfree-ai-support.git
+git push -u origin main
+```
+
+#### Step 2: Deploy to Vercel
+1. **Connect to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Sign in with GitHub
+   - Click "New Project"
+   - Import your GitHub repository
+
+2. **Configure Environment Variables**:
+   - In Vercel dashboard, go to your project
+   - Click "Settings" → "Environment Variables"
+   - Add the following variables:
+     ```
+     GEMINI_API_KEY=your-actual-gemini-api-key-here
+     FLASK_ENV=production
+     FLASK_DEBUG=False
+     ```
+
+3. **Deploy**:
+   - Click "Deploy" in Vercel dashboard
+   - Wait for build to complete (2-3 minutes)
+   - Your app will be live at `https://your-project-name.vercel.app`
+
+### Alternative Free Deployment Options
+
+#### 1. **Railway** (Free Tier)
+- Sign up at [railway.app](https://railway.app)
+- Connect GitHub repository
+- Add environment variables
+- Deploy automatically
+
+#### 2. **Render** (Free Tier)
+- Sign up at [render.com](https://render.com)
+- Connect GitHub repository
+- Add environment variables
+- Deploy as web service
+
+#### 3. **Heroku** (Free Tier - Limited)
+- Sign up at [heroku.com](https://heroku.com)
+- Install Heroku CLI
+- Add `Procfile`:
+  ```
+  web: gunicorn app:app
+  ```
+- Deploy with `git push heroku main`
+
+#### 4. **PythonAnywhere** (Free Tier)
+- Sign up at [pythonanywhere.com](https://pythonanywhere.com)
+- Upload files via web interface
+- Configure WSGI file
+- Set environment variables
+
+### Environment Variables for Deployment
+
+Make sure to set these environment variables in your deployment platform:
+
+```bash
+GEMINI_API_KEY=your-actual-gemini-api-key-here
+FLASK_ENV=production
+FLASK_DEBUG=False
 ```
 
 ## 🎮 Demo Examples
@@ -92,6 +174,9 @@ assingnment/
 ├── config.py             # Configuration settings
 ├── demo.py               # Command-line demo
 ├── requirements.txt      # Python dependencies
+├── vercel.json          # Vercel deployment config
+├── runtime.txt          # Python runtime version
+├── .gitignore           # Git ignore file
 ├── env_example.txt      # Environment variables template
 ├── data/                 # Data folder with JSON files
 │   ├── merchant_data.json
@@ -135,33 +220,33 @@ assingnment/
 ### Example API Usage
 ```bash
 # Test the API directly
-curl -X POST http://localhost:5000/api/query \
+curl -X POST https://your-app.vercel.app/api/query \
   -H "Content-Type: application/json" \
   -d '{"query": "Why is my account on hold?"}'
 
 # Get merchant data
-curl http://localhost:5000/api/data/merchant
+curl https://your-app.vercel.app/api/data/merchant
 
 # Create a support ticket
-curl -X POST http://localhost:5000/api/ticket/create \
+curl -X POST https://your-app.vercel.app/api/ticket/create \
   -H "Content-Type: application/json" \
   -d '{"subject": "Payout issue", "description": "My payout is delayed", "priority": "high"}'
 
 # Update ticket status
-curl -X PUT http://localhost:5000/api/ticket/TKT001/status \
+curl -X PUT https://your-app.vercel.app/api/ticket/TKT001/status \
   -H "Content-Type: application/json" \
   -d '{"status": "resolved"}'
 
 # Add KYC document
-curl -X POST http://localhost:5000/api/kyc/document \
+curl -X POST https://your-app.vercel.app/api/kyc/document \
   -H "Content-Type: application/json" \
   -d '{"document_type": "PAN Card", "status": "pending"}'
 
 # Reload data from files
-curl -X POST http://localhost:5000/api/data/reload
+curl -X POST https://your-app.vercel.app/api/data/reload
 
 # List data files
-curl http://localhost:5000/api/data/files
+curl https://your-app.vercel.app/api/data/files
 ```
 
 ## 🧠 AI Features
@@ -228,12 +313,13 @@ data/
 
 ### Dependencies
 - **LangChain**: AI framework for LLM integration
-- **OpenAI**: GPT-3.5-turbo for natural language processing
+- **Google Gemini**: Gemini-1.5-flash for natural language processing
 - **Flask**: Lightweight web framework
 - **Python-dotenv**: Environment variable management
+- **Gunicorn**: WSGI server for production deployment
 
 ### Configuration
-- Model: GPT-3.5-turbo (cost-efficient)
+- Model: Gemini-1.5-flash (cost-efficient)
 - Max tokens: 1000 (response length limit)
 - Temperature: 0.7 (balanced creativity)
 
@@ -255,6 +341,7 @@ data/
 - ✅ **Separated data** - Clean data management architecture
 - ✅ **File-based storage** - Persistent data in JSON files
 - ✅ **Comprehensive coverage** - All merchant scenarios handled
+- ✅ **Free deployment** - Deploy to Vercel, Railway, Render, etc.
 
 ## 🔍 Troubleshooting
 
@@ -262,9 +349,9 @@ data/
 
 1. **API Key Error**
    ```
-   ❌ Error: Please set your OpenAI API key in .env file
+   ❌ Error: Please set your Google Gemini API key in .env file
    ```
-   **Solution:** Add your OpenAI API key to the `.env` file
+   **Solution:** Add your Google Gemini API key to the `.env` file or environment variables
 
 2. **Import Errors**
    ```
@@ -278,7 +365,16 @@ data/
    ```
    **Solution:** Check that data folder exists and contains JSON files
 
-4. **Port Already in Use**
+4. **Deployment Issues**
+   ```
+   Build failed on Vercel
+   ```
+   **Solution:** 
+   - Check `requirements.txt` has all dependencies
+   - Ensure `vercel.json` is properly configured
+   - Verify environment variables are set in Vercel dashboard
+
+5. **Port Already in Use**
    ```
    Address already in use
    ```
