@@ -1,8 +1,8 @@
 # Core dependencies for AI customer support assistant
-langchain==0.3.26
-langchain-google-genai==2.1.8
-google-generativeai==0.6.10
-flask==2.2.5
-python-dotenv==1.0.0
-pydantic==2.11.7
-gunicorn==21.2.0 
+langchain
+langchain-google-genai
+google-generativeai
+flask
+python-dotenv
+pydantic
+gunicorn
